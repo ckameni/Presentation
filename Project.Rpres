@@ -1,0 +1,99 @@
+Loan amortization calculator
+========================================================
+author: Cédric Kameni,B.A.
+date: `r date()`
+
+Introducting Loan amortization
+========================================================
+transition: rotate
+
+In banking and finance, an amortizing loan is a loan where the principal of the loan is paid down over the life of the loan (that is, amortized) according to an amortization schedule, typically through equal payments.
+
+This application will estimate what your yearly payments will be.
+
+***
+
+![](calculator.png)
+
+
+Application usage
+========================================================
+transition: rotate
+
+This mortgage loan calculator - also known as an amortization schedule calculator - lets you estimate your yearly loan repayments. It also determines out how much of your repayments will go towards the principal and how much will go towards interest. 
+
+Simply input your:
+
+- Interest rate [%]
+- Loan Term[years]
+- Loan Amount [$]
+
+then click **submit** in oder to  see the yearly predicted Payment,Interest,Principal and Balance.
+
+
+Application usage
+========================================================
+transition: rotate
+
+Example: if you choose to loan an amount of 20,000$  for a period of 5 years and an interest rate of 10%, your amortization plan will look like this:
+
+```{r echo=FALSE}
+Invest<-20000
+Repayment<-c(0)
+Interest<-c(0)
+balance<-Invest;
+i<-0.1;
+n <-5
+
+#==============================================================
+e<-0
+tilg<-balance / n
+time<-"year_0"
+for(a in 2:(n+1)) {
+      #tilg<-balance / n
+      Repayment[a] <- tilg
+      #=============================================================
+      b<-a-1
+      balance[a] <- balance[b] - Repayment[a]
+      #=============================================================
+      Interest[a] <- i * balance[b]
+      c<-b-1
+      time[a]<-paste0(b,"year")
+}
+
+Payment <- Interest + Repayment
+balance<-abs(balance)
+year<-rep("NA",(n+1))
+table<-data.frame()
+for(l in 1:((n+1))){table[1,l]<-year[l]}
+table<- rbind(Payment,Interest,Repayment,balance)
+colnames(table)<-time;  
+table[,2:6]
+```
+
+
+
+
+
+conlusion
+========================================================
+left: 60%
+
+The application is great tool to provide a quick design of the loan amortization.
+
+```{r,echo=FALSE,eval=F}
+# Plotting  the amortization plan.
+colours <- c("red", "blue", "yellow", "green")
+barplot(as.matrix(table), main="Loan Barchart", ylab = "Amounts", cex.lab = 1.5,
+        cex.main = 1.4, beside=TRUE, col=colours)
+legend("topleft", c("Payment","Interest","Principal","Balance"), bty="n",cex=0.7,
+       fill=colours)
+
+
+````
+![](sand.png)
+
+***
+
+![](waage.png)
+Thanks!
